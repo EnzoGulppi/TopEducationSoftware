@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Estudiantes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <h1>Academia Preuniversitario TopEducation</h1>
+        </div>
+        <nav>
+
+        </nav>
+        <a class="btn" href="/"><button>Volver al inicio</button></a>
+        <a class="btn-2" href="/nuevo-estudiante"><button>Ingresar nuevo estudiante</button></a>
+    </header>
+
+    <div th:align="center" class="container my-2">
+        <h2>Listado de Estudiantes Inscritos</h2>
+        <table th:border = "2" class="content-table">
+            <thead>
+            <tr>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>RUT</th>
+                <th>Fecha Nacimiento</th>
+                <th>Tipo Colegio</th>
+                <th>Nombre Colegio</th>
+                <th>Año Egreso</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <tr th:each="estudiantes:${estudiantes}">
+                <td th:text="${estudiantes.nombreEstudiante}"></td>
+                <td th:text="${estudiantes.apellidoEstudiante}"></td>
+                <td th:text="${estudiantes.rutEstudiante}"></td>
+                <td th:text="${estudiantes.fechaNacimiento}"></td>
+                <td th:text="${estudiantes.tipoColegio}"></td>
+                <td th:text="${estudiantes.nombreColegio}"></td>
+                <td th:text="${estudiantes.añoEgreso}"></td>
+
+            </tbody>
+        </table>
+
+    </div>
+
+</body>
+</html>

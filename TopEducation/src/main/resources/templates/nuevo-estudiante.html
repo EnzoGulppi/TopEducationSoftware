@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Nuevo Estudiante TopEducation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="header">
+    <div class="logo">
+        <h1>TopEducation</h1>
+    </div>
+    <nav>
+    </nav>
+    <a class="btn" href="/"><button>Volver al inicio</button></a>
+</header>
+<div class = "mainclass">
+    <form  th:action="@{/nuevo-estudiante.html}"  method="POST">
+        <h1><b>Registrar nuevo Estudiante</b></h1>
+        <div class="formcontainer">
+            <hr/>
+            <div class="container">
+                <label><strong>Nombres</strong></label>
+                <input type="text" id = "nombreEstudiante"
+                       placeholder="Ingrese nombre de estudiante" name="nombreEstudiante"   required>
+                <label><strong>Apellidos</strong></label>
+                <input type="text" id = "apellidoEstudiante"
+                       placeholder="Ingrese apellidos del estudiante" name="apellidoEstudiante"  required>
+                <label><strong>RUT</strong></label>
+                <input type="text" id = "rutEstudiante"
+                       placeholder="Ingrese el RUT" name="rutEstudiante" required>
+                <label><strong>Fecha Nacimiento</strong></label>
+                <input type="text" id = "fechaNacimiento"
+                       placeholder="Ingrese la fecha de nacimiento" name="fechaNacimiento"  required>
+                <label><strong>Tipo Colegio</strong></label>
+                <input type="text" id = "tipoColegio"
+                       placeholder="Ingrese el tipo de colegio proveniente" name="tipoColegio"   required>
+                <label><strong>Nombre Colegio</strong></label>
+                <input type="text" id = "nombreColegio"
+                       placeholder="Ingrese el nombre del colegio" name="nombreColegio"   required>
+                <label><strong>Año Egreso</strong></label>
+                <input type="text" id = "añoEgreso"
+                       placeholder="Ingrese año de egreso" name="añoEgreso"  required>
+
+            </div>
+            <button type="submit">Registrar Estudiante</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
