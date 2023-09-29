@@ -9,6 +9,84 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        .mainclass{
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            font-family: Roboto, Arial, sans-serif;
+            font-size: 15px;
+        }
+        form {
+            border: 6px solid #f1f1f1;
+        }
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 16px 8px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #42bfbb;
+            color: white;
+            padding: 14px 0;
+            margin: 10px 0;
+            border: none;
+            cursor: grabbing;
+            width: 100%;
+        }
+        h1 {
+            text-align:center;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+        .formcontainer {
+            text-align: left;
+            margin: 24px 50px 12px;
+        }
+        .container {
+            padding: 16px 0;
+            text-align:left;
+        }
+        span.psw {
+            float: right;
+            padding-top: 0;
+            padding-right: 15px;
+        }
+        /* Change styles for span on extra small screens */
+        .header{
+            background-color: #1b3039;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            height: 85px;
+            padding: 5px 10%;
+        }
+        .header .logo{
+            margin-right: auto;
+            color: white;
+            font-family: 'Pacifico',serif;
+        }
+        .header .btn button{
+            margin-left: 20px;
+            font-weight: 700;
+            color: #1b3039;
+            padding: 9px 25px;
+            background: #eceff1;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease 0s;
+        }
+        .header .btn button:hover{
+            background-color: #e2f1f8;
+            color: #ffbc0e;
+            transform: scale(1.1);
+        }
+    </style>
 </head>
 <body>
 
@@ -21,7 +99,7 @@
     <a class="btn" href="/"><button>Volver al inicio</button></a>
 </header>
 <div class = "mainclass">
-    <form  th:action="@{/nuevo-estudiante.html}"  method="POST">
+    <form  th:action="@{/nuevo-estudiante}"  method="POST">
         <h1><b>Registrar nuevo Estudiante</b></h1>
         <div class="formcontainer">
             <hr/>
@@ -36,23 +114,22 @@
                 <input type="text" id = "rutEstudiante"
                        placeholder="Ingrese el RUT" name="rutEstudiante" required>
                 <label><strong>Fecha Nacimiento</strong></label>
-                <input type="text" id = "fechaNacimiento"
+                <input type="date" id = "fechaNacimiento"
                        placeholder="Ingrese la fecha de nacimiento" name="fechaNacimiento"  required>
                 <label><strong>Tipo Colegio</strong></label>
                 <input type="text" id = "tipoColegio"
-                       placeholder="Ingrese el tipo de colegio proveniente" name="tipoColegio"   required>
+                       placeholder="Ingrese el tipo de colegio proveniente" name="tipoColegio"  required>
                 <label><strong>Nombre Colegio</strong></label>
                 <input type="text" id = "nombreColegio"
-                       placeholder="Ingrese el nombre del colegio" name="nombreColegio"   required>
+                       placeholder="Ingrese el nombre del colegio" name="nombreColegio"  required>
                 <label><strong>Año Egreso</strong></label>
-                <input type="text" id = "añoEgreso"
-                       placeholder="Ingrese año de egreso" name="añoEgreso"  required>
+                <input type="text" id = "egreso"
+                       placeholder="Ingrese año de egreso" name="egreso" required>
 
             </div>
             <button type="submit">Registrar Estudiante</button>
         </div>
     </form>
 </div>
-
 </body>
 </html>

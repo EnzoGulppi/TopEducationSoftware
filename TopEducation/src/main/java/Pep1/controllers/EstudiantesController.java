@@ -5,9 +5,15 @@ import Pep1.services.EstudiantesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+
+import java.time.LocalDate;
 import java.util.ArrayList;
+
 
 
 @Controller
@@ -15,11 +21,11 @@ import java.util.ArrayList;
 public class EstudiantesController {
 
     @Autowired
-    private EstudiantesService service;
+    private EstudiantesService estudiantesService;
 
-    @GetMapping("/lista-estudiantes")
+    @GetMapping("/lista-estudiante")
     public String listar(Model model) {
-        ArrayList<EstudiantesEntity> estudiantes = service.obtenerEstudiantes();
+        ArrayList<EstudiantesEntity> estudiantes =  estudiantesService.obtenerEstudiantes();
         model.addAttribute("estudiantes", estudiantes);
         return "index";
     }
@@ -29,15 +35,18 @@ public class EstudiantesController {
         return "nuevo-estudiante";
     }
     @PostMapping("/nuevo-estudiante")
-    public String nuevoEstudiante(@RequestParam("Nombres") String nombreEstudiante,
-                                 @RequestParam("Apellido") String apellidoEstudiante,
-                                 @RequestParam("Rut") String rutEstudiante,
-                                 @RequestParam("Fecha NAcimiento") String fechaNacimiento,
-                                 @RequestParam("Tipo Colegio") String tipoColegio,
-                                 @RequestParam("Nombre Colegio") String nombreColegio,
-                                 @RequestParam("Año de Egreso") Integer añoEgreso){
-        service.guardarEstudiante(nombreEstudiante, apellidoEstudiante, rutEstudiante, fechaNacimiento, tipoColegio,nombreColegio,añoEgreso);
+    public String nuevoEstudiante(@RequestParam("nombreEstudiante") String nombreEstudiante,
+                                 @RequestParam("apellidoEstudiante") String apellidoEstudiante,
+                                 @RequestParam("rutEstudiante") String rutEstudiante,
+                                 @RequestParam("fechaNacimiento") LocalDate fechaNacimiento,
+                                 @RequestParam("tipoColegio") String tipoColegio,
+                                 @RequestParam("nombreColegio") String nombreColegio,
+                                 @RequestParam("egreso") Integer egreso){
+        estudiantesService.guardarEstudiante(nombreEstudiante, apellidoEstudiante, rutEstudiante, fechaNacimiento, tipoColegio,nombreColegio,egreso);
         return "redirect:/nuevo-estudiante";
     }
 
 }
+
+
+

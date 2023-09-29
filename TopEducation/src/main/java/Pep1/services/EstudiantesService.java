@@ -5,22 +5,24 @@ import Pep1.repositories.EstudiantesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+
 
 @Service
 public class EstudiantesService {
 
     @Autowired
-    EstudiantesRepository estudiantesRepository;
+    private EstudiantesRepository estudiantesRepository;
 
     public void guardarEstudiante(
             String nombreEstudiante,
             String apellidoEstudiante,
             String rutEstudiante,
-            String fechaNacimiento,
+            LocalDate fechaNacimiento,
             String tipoColegio,
             String nombreColegio,
-            Integer añoEgreso){
+            Integer egreso){
 
         EstudiantesEntity estudiante = new EstudiantesEntity();
         estudiante.setNombreEstudiante(nombreEstudiante);
@@ -29,10 +31,13 @@ public class EstudiantesService {
         estudiante.setFechaNacimiento(fechaNacimiento);
         estudiante.setTipoColegio(tipoColegio);
         estudiante.setNombreColegio(nombreColegio);
-        estudiante.setAñoEgreso(añoEgreso);
+        estudiante.setEgreso(egreso);
         estudiantesRepository.save(estudiante);
     }
     public ArrayList<EstudiantesEntity> obtenerEstudiantes(){
-        return (ArrayList<EstudiantesEntity>) estudiantesRepository.findAll();
+        return (ArrayList<EstudiantesEntity>)  estudiantesRepository.findAll();
+    }
+    public EstudiantesEntity findByRutEstudiante(String rutEstudiante){
+        return estudiantesRepository.findByRutEstudiante(rutEstudiante);
     }
 }
