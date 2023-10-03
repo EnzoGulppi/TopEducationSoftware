@@ -7,10 +7,12 @@ import Pep1.repositories.EstudiantesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -32,65 +34,54 @@ public class CuotaService {
         return (ArrayList<CuotaEntity>) cuotaRepository.saveAll(cuotas);
     }
 
+    //Dejamos la matricula fija
+    public boolean esMatriculaPagada(String rutEstudiante) {
+        List<CuotaEntity> cuotasDeMatricula = cuotaRepository.findByEstudianteRutEstudianteAndEsMatricula(rutEstudiante, true);
+        //Declaramos el monto de la matricula
+        BigDecimal montoMatriculaEsperado = new BigDecimal("70000");
+        //Verificamos si el estudiante pago matricula
+        for (CuotaEntity cuota : cuotasDeMatricula) {
+            if ("Pagado".equals(cuota.getEstado()) && montoMatriculaEsperado.compareTo(cuota.getMonto()) == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+    //Generamos cuotas para el estudiante
+    public Integer calcularCuotasTipoColegio(String rut){
+        EstudiantesEntity estudiantes = EstudiantesRepository.findByTipoColegio(rut);
+        return obtenerCuotasTipoColegio(estudiantes);
+    }
+
+    //REVISAAAAAAAAAAR
+    public Integer obtenerCuotasTipoColegio(EstudiantesEntity estudiantes){
+        Integer maxCuotas = 0;
+        double descuento = 0;
+        if(estudiantes.getTipoColegio().equals("Municipal")){
+            descuento = 0.2;
+            maxCuotas=10;
+        } else if (estudiantes.getTipoColegio().equals("Subencionado")) {
+            descuento = 0.10;
+            maxCuotas=7;
+        } else if (estudiantes.getTipoColegio().equals("Privado")) {
+            maxCuotas=4;
+        }
+        return null;
+    }
+
+
+
+    //PRIMERO HAY QUE VER SI EXISTEN CUOTAS
+
+
+
 
     //##################################################################################################
     //Mejorar la implementacion de las ideas
     //Calculamos descuento por tipo de procedencia
-    public double calcularDescuentoColegioProc(String rutEstudiante){
-        //Buscamos por rut al estudiante
-        EstudiantesEntity estudiantes = EstudiantesRepository.findByRut(rutEstudiante); //Implementar findByRut en repositorio
-        return obtenerDescuentoTipoProc(estudiantes);
-    }
-    public double obtenerDescuentoTipoProc(EstudiantesEntity estudiantes){
-        double matricula = 70000;
-        double arancel = 1500000;
-        double descuento = 0;
 
-        switch (estudiantes.getTipoColegio().toLowerCase()) {
-            case "municipal":
-                descuento = 0.20;
-                break;
-            case "subvencionado":
-                descuento = 0.10;
-                break;
-            case "privado":
-                descuento = 0;
-                break;
-        }
-
-        //if (estudiantes.isEsPagoAlContado()) {
-        //    descuento += 0.50;
-        //}
-
-        double arancelDescuento = arancel * (1-descuento);
-        return matricula + arancelDescuento;
-    }
 
     //##################################################################################################
-    public double calcularCuotasColegioProc(EstudiantesEntity estudiantes) {
-        double matricula = 70000;
-        double arancel = 1500000;
-        double descuento = 0;
-
-        int maxCuotas = 0;
-
-        switch (estudiantes.getTipoColegio().toLowerCase()) {
-            case "municipal":
-                maxCuotas = 10;
-                break;
-            case "subvencionado":
-                maxCuotas = 7;
-                break;
-            case "privado":
-                maxCuotas = 4;
-                break;
-        }
-        //Implementamos una validacion para ver que no exceda
-        //if(estudiantes.getNumeroDeCuotas() > maxCuotas) {
-        //throw new IllegalArgumentException("Número de cuotas excede el máximo permitido");
-        //}
-        return 0;
-    }
 
 
 

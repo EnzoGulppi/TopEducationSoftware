@@ -14,4 +14,11 @@ public interface EstudiantesRepository extends JpaRepository<EstudiantesEntity, 
 
     @Query("select e from EstudiantesEntity e where e.rutEstudiante = :rutEstudiante")
     EstudiantesEntity findByRutEstudiante(@Param("rutEstudiante") String rutEstudiante);
+
+
+    @Query("select e from EstudiantesEntity e where e.tipoColegio = :tipoColegio")
+    static EstudiantesEntity findByTipoColegio(@Param("tipoColegio") String tipoColegio) {
+        return null;
+    }
+
 }

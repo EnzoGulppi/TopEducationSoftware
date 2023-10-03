@@ -19,6 +19,7 @@ public class CuotaEntity {
     private Long id;
     private BigDecimal monto;
     private LocalDate vencimiento;
+    private Boolean esMatricula;
     private String estado = "Pendiente";
 
     @ManyToOne
