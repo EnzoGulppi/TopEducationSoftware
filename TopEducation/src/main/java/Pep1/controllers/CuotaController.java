@@ -2,15 +2,14 @@ package Pep1.controllers;
 
 import Pep1.entities.CuotaEntity;
 import Pep1.entities.EstudiantesEntity;
+import Pep1.repositories.EstudiantesRepository;
 import Pep1.services.CuotaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.thymeleaf.model.IModel;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -37,4 +36,9 @@ public class CuotaController {
         model.addAttribute("cuotas", cuotas);
         return "resumen-cuotas";
     }
+
+
+
+
+
 }
