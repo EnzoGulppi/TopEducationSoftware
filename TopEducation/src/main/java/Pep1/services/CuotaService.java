@@ -34,6 +34,34 @@ public class CuotaService {
         return (ArrayList<CuotaEntity>) cuotaRepository.saveAll(cuotas);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //Dejamos la matricula fija
     public boolean esMatriculaPagada(String rutEstudiante) {
         List<CuotaEntity> cuotasDeMatricula = cuotaRepository.findByEstudianteRutEstudianteAndEsMatricula(rutEstudiante, true);

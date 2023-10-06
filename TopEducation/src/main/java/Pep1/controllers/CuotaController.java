@@ -14,12 +14,18 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Controller
-@RequestMapping("/cuotas")
+@RequestMapping
 public class CuotaController {
     @Autowired
     private CuotaService cuotaService;
 
-    @PostMapping("/generar")
+
+    @GetMapping("/resumen-cuotas")
+    public String cuotas(){
+        return "resumen-cuotas";
+    }
+
+    @PostMapping("/resumen-cuotas")
     public String generarCuotas(@RequestParam("rutEstudiante") String rutEstudiante,
                                 @RequestParam("montoTotal") BigDecimal montoTotal,
                                 @RequestParam("numCuotas") int numCuotas,
