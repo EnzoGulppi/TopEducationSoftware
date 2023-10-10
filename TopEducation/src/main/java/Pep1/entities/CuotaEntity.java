@@ -17,11 +17,16 @@ public class CuotaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private BigDecimal monto;
+    private Double arancel;
+    private String tipoPago;
+    private Integer numeroCoutas;
+    private Double porPagar;
     private LocalDate vencimiento;
-    private Boolean esMatricula;
-    private String estado = "Pendiente";
+    private String rutEstudiante;
+
+
 
     @ManyToOne
     private EstudiantesEntity estudiante;
+
 }

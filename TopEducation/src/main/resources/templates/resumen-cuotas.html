@@ -10,13 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <title>Resumen de Cuotas</title>
     <style>
-        .mainclass{
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            font-family: Roboto, Arial, sans-serif;
-            font-size: 15px;
-        }
+
         form {
             border: 6px solid #f1f1f1;
         }
@@ -43,19 +37,7 @@
         button:hover {
             opacity: 0.8;
         }
-        .formcontainer {
-            text-align: left;
-            margin: 24px 50px 12px;
-        }
-        .container {
-            padding: 16px 0;
-            text-align:left;
-        }
-        span.psw {
-            float: right;
-            padding-top: 0;
-            padding-right: 15px;
-        }
+
         /* Change styles for span on extra small screens */
         .header{
             background-color: #1b3039;
@@ -86,6 +68,38 @@
             color: #ffbc0e;
             transform: scale(1.1);
         }
+        .content-table{
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.9em;
+            min-width: 400px;
+            border-radius: 5px 5px 0 0;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .content-table thead tr{
+            background-color: #009879;
+            color: #ffffff;
+            text-align: left;
+            font-weight: bold;
+        }
+        .content-table th,
+        .content-table td{
+            padding: 12px 15px;
+        }
+        .content-table tbody tr{
+            border-bottom: 1px solid #dddddd;
+        }
+        .content-table tbody tr:nth-of-type(even){
+            background-color: #f3f3f3;
+        }
+        .content-table tbody tr:last-of-type{
+            border-bottom: 2px solid #009879;
+        }
+        .content-table tbody tr.active-row{
+            font-weight: bold;
+            color: #009879;
+        }
     </style>
 </head>
 <body>
@@ -97,21 +111,36 @@
     </nav>
     <a class="btn" href="/lista-estudiante"><button>Volver a Lista</button></a>
 </header>
-<table>
+<div th:align="center" class="container my-2">
+<table th:border = "1" class="content-table">
     <thead>
     <tr>
-        <th>Monto</th>
-        <th>Fecha de Vencimiento</th>
+        <th>id</th>
+        <th>Rut</th>
+        <th>arancel</th>
         <th>Estado</th>
+        <th>Tipo Pago</th>
+        <th>Numero Cuotas</th>
+        <th>Pendiente por Pagar</th>
+        <th>Fecha de Vencimiento</th>
+
+
     </tr>
     </thead>
     <tbody>
     <tr th:each="cuota : ${cuotas}">
-        <td th:text="${cuota.monto}"></td>
-        <td th:text="${cuota.fechaVencimiento}"></td>
-        <td th:text="${cuota.estado}"></td>
+        <td th:text="${cuota.id}"></td>
+        <td th:text="${cuota.rutEstudiante}"></td>
+        <td th:text="${cuota.arancel}"></td>
+        <td th:text="${cuota.tipoPago}"></td>
+        <td th:text="${cuota.numeroCoutas}"></td>
+        <td th:text="${cuota.porPagar}"></td>
+        <td th:text="${cuota.vencimiento}"></td>
+
+
     </tr>
     </tbody>
 </table>
+</div>
 </body>
 </html>
