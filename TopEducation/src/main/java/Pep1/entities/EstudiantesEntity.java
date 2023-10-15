@@ -19,6 +19,9 @@ import java.util.List;
 public class EstudiantesEntity {
     @Id
     @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false)
+    private Long idEstudiante;
     private String rutEstudiante;
     private String nombreEstudiante;
     private String apellidoEstudiante;

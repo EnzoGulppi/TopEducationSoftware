@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<header class="header">
+    <div class="logo">
+        <h1>TopEducation</h1>
+    </div>
+    <nav>
+    </nav>
+    <a class="btn" href="/lista-estudiante"><button>Volver a Lista</button></a>
+</header>
+<div th:align="center" class="container my-2">
+    <table th:border = "1" class="content-table">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>Tipo Pago</th>
+            <th>Estado</th>
+            <th>arancel</th>
+            <th>Pendiente por Pagar</th>
+            <th>Fecha Creacion</th>
+            <th>Fecha de Pago</th>
+            <th>Meses de Atraso</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cuota:${cuotas}">
+            <td th:text="${cuota.id}"></td>
+            <td th:text="${cuota.tipoPago}"></td>
+            <td th:text="${cuota.estadoCuota}"></td>
+            <td th:text="${cuota.arancel}"></td>
+            <td th:text="${cuota.montoTotalPagado}"></td>
+            <td th:text="${cuota.creacionCuota}"></td>
+            <td th:text="${cuota.pagoCuota}"></td>
+            <td th:text="${cuota.atraso}"></td>
+            <td>
+
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
