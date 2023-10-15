@@ -9,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import java.math.BigDecimal;
-
-import java.security.PrivateKey;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,10 +24,6 @@ public class CuotaService {
 
 
     public CuotaEntity BuscarPorID(Long idCuota){ return cuotaRepository.findByIdCuota(idCuota);}
-
-    public void guardarArancel(CuotaEntity cuota) {
-        cuotaRepository.save(cuota);
-    }
     /*public void guardarNumCuotas(Integer numeroCoutas) {
         CuotaEntity cuota = new CuotaEntity();
         cuota.setNumeroCuotas(numeroCoutas);
@@ -61,36 +54,36 @@ public class CuotaService {
     }
 
     public ArrayList<CuotaEntity> generarCuotasEstudiante(String rut, Integer cantidad, String tipo) {
-        EstudiantesEntity estudiante = estudiantesRepository.findByRutEstudiante(rut);
+        EstudiantesEntity estudiantes = estudiantesRepository.findByRutEstudiante(rut);
         ArrayList<CuotaEntity> cuotasGeneradas = new ArrayList<>();
 
-        if (estudiante == null || tieneCuotasPrevias(estudiante) || tieneErroresDeEntrada(estudiante, cantidad, tipo)) {
-            cuotasGeneradas.add(crearErrorCuota(estudiante, cantidad, tipo));
+        if (estudiantes == null || tieneCuotasPrevias(estudiantes) || tieneErroresDeEntrada(estudiantes, cantidad, tipo)) {
+            cuotasGeneradas.add(crearErrorCuota(estudiantes, cantidad, tipo));
             return cuotasGeneradas;
         }
 
-        cuotasGeneradas.add(crearCuotaDeMatricula(estudiante));
-        float arancelConDescuentos = calcularArancelConDescuentos(estudiante, 1500000);
+        cuotasGeneradas.add(crearCuotaDeMatricula(estudiantes));
+        float arancelConDescuentos = calcularArancelConDescuentos(estudiantes);
 
         if ("Contado".equals(tipo)) {
-            cuotasGeneradas.add(crearCuotaContado(estudiante, arancelConDescuentos / 2));
+            cuotasGeneradas.add(crearCuotaContado(estudiantes, arancelConDescuentos / 2));
         } else {
-            cuotasGeneradas.addAll(crearCuotas(estudiante, cantidad, arancelConDescuentos / cantidad));
+            cuotasGeneradas.addAll(crearCuotas(estudiantes, cantidad, arancelConDescuentos / cantidad));
         }
 
         return cuotasGeneradas;
     }
 
-    private boolean tieneCuotasPrevias(EstudiantesEntity estudiante) {
-        return !cuotaRepository.findAllByEstudianteId(estudiante.getIdEstudiante()).isEmpty();
+    private boolean tieneCuotasPrevias(EstudiantesEntity estudiantes) {
+        return !cuotaRepository.findAllByEstudianteId(estudiantes.getIdEstudiante()).isEmpty();
     }
 
-    private boolean tieneErroresDeEntrada(EstudiantesEntity estudiante, Integer cantidad, String tipo) {
+    private boolean tieneErroresDeEntrada(EstudiantesEntity estudiantes, Integer cantidad, String tipo) {
         //Más validaciones según sean necesarias
         return cantidad > 1 && "Contado".equals(tipo);
     }
 
-    private CuotaEntity crearErrorCuota(EstudiantesEntity estudiante, Integer cantidad, String tipo) {
+    private CuotaEntity crearErrorCuota(EstudiantesEntity estudiantes, Integer cantidad, String tipo) {
         CuotaEntity errorCuota = new CuotaEntity();
         errorCuota.setAtraso(-1);
         return errorCuota;
@@ -110,24 +103,24 @@ public class CuotaService {
         return matricula;
     }
 
-    private float calcularArancelConDescuentos(EstudiantesEntity estudiante, float arancelBase) {
-        float descuento = 0;
+    private float calcularArancelConDescuentos(EstudiantesEntity estudiantes) {
+        double descuento = 0;
 
-        if ("Municipal".equals(estudiante.getTipoColegio())) {
-            descuento = arancelBase * 0.20f;
-        } else if ("Subvencionado".equals(estudiante.getTipoColegio())) {
-            descuento = arancelBase * 0.10f;
+        if ("Municipal".equals(estudiantes.getTipoColegio())) {
+            descuento = (double) 1500000 * 0.20;
+        } else if ("Subvencionado".equals(estudiantes.getTipoColegio())) {
+            descuento = (double) 1500000 * 0.10;
         }
 
-        if (estudiante.getEgreso() == 0) {
-            descuento += arancelBase * 0.15f;
-        } else if (estudiante.getEgreso() <= 2) {
-            descuento += arancelBase * 0.08f;
-        } else if (estudiante.getEgreso() <= 4) {
-            descuento += arancelBase * 0.04f;
+        if (estudiantes.getEgreso() == 0) {
+            descuento += (double) 1500000 * 0.15;
+        } else if (estudiantes.getEgreso() <= 2) {
+            descuento += (double) 1500000 * 0.08;
+        } else if (estudiantes.getEgreso() <= 4) {
+            descuento += (double) 1500000 * 0.04;
         }
-
-        return arancelBase - descuento;
+        double total = (double) 1500000 - descuento;
+        return (float) total;
     }
 
     private CuotaEntity crearCuotaContado(EstudiantesEntity estudiante, double monto) {
@@ -149,10 +142,10 @@ public class CuotaService {
         for (int i = 0; i < cantidad; i++) {
             CuotaEntity cuota = new CuotaEntity();
             cuota.setIdEstudiante(estudiante.getIdEstudiante());
-            cuota.setArancel(monto);
+            cuota.setArancel(monto / cantidad);
             cuota.setTipoPago("Cuotas");
             cuota.setEstadoCuota("Pendiente");
-            cuota.setMontoTotalPagado(monto);
+            cuota.setMontoTotalPagado(monto / cantidad);
             cuota.setCreacionCuota(LocalDate.now());
             cuota.setAtraso(0);
             cuotaRepository.save(cuota);

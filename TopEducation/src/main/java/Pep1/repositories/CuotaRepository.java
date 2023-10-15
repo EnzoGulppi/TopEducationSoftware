@@ -16,7 +16,7 @@ public interface CuotaRepository extends JpaRepository<CuotaEntity, Long> {
 
     @Query("SELECT cuota FROM CuotaEntity cuota WHERE cuota.idEstudiante = :idEstudiante")
     ArrayList<CuotaEntity> findAllByEstudianteId(@Param("idEstudiante") Long idEstudiante);
-    @Query("SELECT cuota FROM CuotaEntity cuota WHERE cuota.id = :id")
-    CuotaEntity findByIdCuota(Long id);
+    @Query("SELECT cuota FROM CuotaEntity cuota WHERE cuota.idCuota = :idCuota")
+    CuotaEntity findByIdCuota(Long idCuota);
     CuotaEntity findPlanillaByEstudiante(EstudiantesEntity estudiantes);
 }

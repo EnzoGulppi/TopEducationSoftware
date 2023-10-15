@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class CuotaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idCuota;
     private Long idEstudiante;
     private Double arancel;
     private String tipoPago;

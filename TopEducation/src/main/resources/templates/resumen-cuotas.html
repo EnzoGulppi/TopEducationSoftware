@@ -126,13 +126,13 @@
         </thead>
         <tbody>
         <tr th:each="cuota:${cuotas}">
-            <td th:text="${cuota.id}"></td>
+            <td th:text="${cuota.idCuota}"></td>
             <td th:text="${cuota.estadoCuota}"></td>
             <td th:text="${cuota.arancel}"></td>
             <td th:text="${cuota.montoTotalPagado}"></td>
             <td>
-                <a class="btn btn-primary" href="#" role="button" th:href="'/RegistrarPagoCuota/' + ${cuota.id}">Registrar pago</a>
-                <a class="btn btn-primary" href="#" role="button" th:href="'/DetalleCuota/' + ${cuota.id}">Detalle</a>
+                <a class="btn btn-primary" href="#" role="button" th:href="'/RegistrarPagoCuota/' + ${cuota.idCuota}">Registrar pago</a>
+                <a class="btn btn-primary" href="#" role="button" th:href="'/DetalleCuota/' + ${cuota.idCuota}">Detalle</a>
             </td>
         </tr>
         </tbody>

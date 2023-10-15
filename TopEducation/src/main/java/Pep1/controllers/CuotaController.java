@@ -77,7 +77,7 @@ public class CuotaController {
             model.addAttribute("mensaje", "Cuotas generadas satisfactoriamente.");
         }
 
-        return "redirect:/resumen-cuotas";
+        return "redirect:/lista-estudiante";
     }
 
 
