@@ -115,17 +115,19 @@
     <table border = "1" class = "content-table">
         <thead>
         <tr>
-            <th style = "color:white">Rut Estudiante</th>
-            <th style = "color:white">Fecha del examen</th>
+            <th style = "color:white">Id Prueba</th>
             <th style = "color:white">Puntaje obtenido</th>
+            <th style = "color:white">Fecha del examen</th>
+            <th style = "color:white">Fecha de resultados</th>
 
         </tr>
         </thead>
         <tbody>
         <tr th:each="data:${datas}">
-            <td th:text="${data.rutEstudiante}"></td>
-            <td th:text="${data.fechaExamen}"></td>
-            <td th:text="${data.puntajeExamen}"></td>
+            <td th:text="${data.idPrueba}"></td>
+            <td th:text="${data.puntaje}"></td>
+            <td th:text="${data.fechaRealizada}"></td>
+            <td th:text="${data.fechaResultado}"></td>
         </tr>
         </tbody>
     </table>

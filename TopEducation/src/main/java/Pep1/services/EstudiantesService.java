@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 @Service
@@ -15,29 +16,32 @@ public class EstudiantesService {
     @Autowired
     private EstudiantesRepository estudiantesRepository;
 
-    public void guardarEstudiante(
+    public EstudiantesEntity guardarEstudiante(
             String nombreEstudiante,
             String apellidoEstudiante,
             String rutEstudiante,
-            LocalDate fechaNacimiento,
+            Date fechaNacimiento,
             String tipoColegio,
             String nombreColegio,
             Integer egreso){
 
-        EstudiantesEntity estudiante = new EstudiantesEntity();
-        estudiante.setNombreEstudiante(nombreEstudiante);
-        estudiante.setApellidoEstudiante(apellidoEstudiante);
-        estudiante.setRutEstudiante(rutEstudiante);
-        estudiante.setFechaNacimiento(fechaNacimiento);
-        estudiante.setTipoColegio(tipoColegio);
-        estudiante.setNombreColegio(nombreColegio);
-        estudiante.setEgreso(egreso);
-        estudiantesRepository.save(estudiante);
+        EstudiantesEntity estudiantes = new EstudiantesEntity();
+        estudiantes.setNombreEstudiante(nombreEstudiante);
+        estudiantes.setApellidoEstudiante(apellidoEstudiante);
+        estudiantes.setRutEstudiante(rutEstudiante);
+        estudiantes.setFechaNacimiento(fechaNacimiento);
+        estudiantes.setTipoColegio(tipoColegio);
+        estudiantes.setNombreColegio(nombreColegio);
+        estudiantes.setEgreso(egreso);
+        estudiantesRepository.save(estudiantes);
+        return estudiantes;
     }
     public ArrayList<EstudiantesEntity> obtenerEstudiantes(){
         return (ArrayList<EstudiantesEntity>)  estudiantesRepository.findAll();
     }
-    public EstudiantesEntity findByRutEstudiante(String rutEstudiante){
-        return estudiantesRepository.findByRutEstudiante(rutEstudiante);
+
+
+    public EstudiantesEntity guardarEstudiantes(EstudiantesEntity estudiantes){
+        return estudiantesRepository.save(estudiantes);
     }
 }

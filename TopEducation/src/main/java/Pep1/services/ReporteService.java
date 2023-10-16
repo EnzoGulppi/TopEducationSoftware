@@ -3,17 +3,24 @@ package Pep1.services;
 import Pep1.entities.CuotaEntity;
 import Pep1.entities.EstudiantesEntity;
 import Pep1.entities.SubirDataEntity;
+import com.opencsv.CSVWriter;
+import lombok.Generated;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
-import javax.annotation.processing.Generated;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ReporteService {
     @Autowired
-    CuotaService cuotaService;
+    private CuotaService cuotaService;
 
     @Autowired
     EstudiantesService estudiantesService;
@@ -21,10 +28,10 @@ public class ReporteService {
     @Autowired
     SubirDataService pruebaService;
 
-    @Generated()
+    @Generated
     public ResponseEntity<byte[]> ArchivoPlannillaAranceles() {
         ArrayList<String[]> data = new ArrayList<>();
-        data.add(new String[]{"Rut", "Valor Nominal", "Tipo de pago", "Descuento Colegio",
+        data.add(new String[]{"Rut", "Valor Arancel", "Tipo de pago", "Descuento Colegio",
                 "Descuento egreso", "Descuento pruebas", "Descuento Tipo Pago", "Total a pagar"});
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -113,5 +120,67 @@ public class ReporteService {
         }
         cuotaService.ActualizarCuotas((ArrayList<CuotaEntity>) cuotas);
     }
+    @Generated
+    public ResponseEntity<byte[]> ResumenEstadoDePagos() {
+        ArrayList<String[]> data = new ArrayList<>();
+        data.add(new String[]{"Rut", "Nombre de estudiante", "Nro Examenes rendidos", "Promedio puntaje exámenes",
+                "Monto total arancel a pagar", "Tipo Pago (Contado/Cuotas)",
+                "Nro. total de cuotas pactadas", "Nro. cuotas pagadas", "Monto total pagado",
+                "Fecha último pago", "Saldo por pagar", "Nro. Cuotas con retraso"});
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        List<EstudiantesEntity> estudiantes = estudiantesService.obtenerEstudiantes();
+
+        for (EstudiantesEntity estudiante : estudiantes) {
+            String RutEstudiante = estudiante.getRutEstudiante();
+            String NombreEstudiante = estudiante.getNombreEstudiante() + " " + estudiante.getApellidoEstudiante();
+
+            ArrayList<CuotaEntity> cuotasEstudiante = cuotaService.obtenerCuotasPorRutEstudiante(RutEstudiante);
+            ArrayList<SubirDataEntity> pruebasEstudiante = pruebaService.ObtenerPruebasPorRutEstudiante(RutEstudiante);
+
+            String NroExamenesRendidos = String.valueOf(pruebasEstudiante.size());
+            String NroTotalCuotas = String.valueOf(cuotasEstudiante.size());
+            String Promedio = String.valueOf(pruebaService.PromediosPruebasEstudiante(pruebasEstudiante));
+            String Monto = "";
+            String TipoPago = "";
+            String TotalPagadas = "";
+            String MontoPagado = "";
+            String CuotasAtrasadas = "";
+            String FechaUltimoPago = "";
+            String MontoPorPagar = "";
+
+            if (!cuotasEstudiante.isEmpty()) {
+                TipoPago = cuotasEstudiante.get(0).getTipoPago();
+                Monto = String.valueOf((cuotasEstudiante.get(0).getMontoTotalPagado())
+                        * (cuotasEstudiante.size() - 1));
+
+                int CuotasPagadas = cuotaService.ContarCuotasPagadas(cuotasEstudiante);
+                TotalPagadas = String.valueOf(CuotasPagadas - 1);
+                MontoPagado = String.valueOf((cuotasEstudiante.get(0).getMontoTotalPagado()) * CuotasPagadas);
+
+                MontoPorPagar = String.valueOf((cuotasEstudiante.get(0).getMontoTotalPagado())
+                        * (cuotasEstudiante.size() - CuotasPagadas));
+                CuotasAtrasadas = String.valueOf(cuotaService.ContarCuotasAtrasadas(cuotasEstudiante));
+                FechaUltimoPago = cuotaService.FechaUltimaCuotaPagada(cuotasEstudiante);
+            }
+
+            data.add(new String[]{RutEstudiante, NombreEstudiante, NroExamenesRendidos, Promedio,
+                    Monto, TipoPago, NroTotalCuotas, TotalPagadas, MontoPagado,
+                    FechaUltimoPago, MontoPorPagar, CuotasAtrasadas});
+        }
+
+        try (CSVWriter writer = new CSVWriter(new OutputStreamWriter(outputStream))) {
+            writer.writeAll(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("text/csv"));
+        headers.setContentDispositionFormData("attachment", "Reporte.csv");
+
+        return ResponseEntity.ok().headers(headers).contentLength(outputStream.size()).body(outputStream.toByteArray());
+    }
+
 
 }

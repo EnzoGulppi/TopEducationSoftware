@@ -1,6 +1,7 @@
 package Pep1.controllers;
 
 import Pep1.entities.EstudiantesEntity;
+import Pep1.repositories.EstudiantesRepository;
 import Pep1.services.EstudiantesService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-
+import java.util.Date;
 
 
 @Controller
@@ -39,7 +40,7 @@ public class EstudiantesController {
     public String nuevoEstudiante(@RequestParam("nombreEstudiante") String nombreEstudiante,
                                   @RequestParam("apellidoEstudiante") String apellidoEstudiante,
                                   @RequestParam("rutEstudiante") String rutEstudiante,
-                                  @RequestParam("fechaNacimiento") LocalDate fechaNacimiento,
+                                  @RequestParam("fechaNacimiento") Date fechaNacimiento,
                                   @RequestParam("tipoColegio") String tipoColegio,
                                   @RequestParam("nombreColegio") String nombreColegio,
                                   @RequestParam("egreso") Integer egreso,

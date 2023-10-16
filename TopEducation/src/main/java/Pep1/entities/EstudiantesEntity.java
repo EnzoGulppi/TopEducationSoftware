@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.antlr.v4.runtime.misc.NotNull;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 
@@ -25,7 +26,7 @@ public class EstudiantesEntity {
     private String rutEstudiante;
     private String nombreEstudiante;
     private String apellidoEstudiante;
-    private LocalDate fechaNacimiento;
+    private Date fechaNacimiento;
     private String tipoColegio;
     private String nombreColegio;
     private Integer egreso;

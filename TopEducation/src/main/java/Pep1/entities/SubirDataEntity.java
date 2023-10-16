@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.antlr.v4.runtime.misc.NotNull;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "data")
 @NoArgsConstructor
@@ -14,9 +16,12 @@ import org.antlr.v4.runtime.misc.NotNull;
 public class SubirDataEntity {
     @Id
     @NotNull
-    private String rutEstudiante ;
-    private String fechaExamen;
-    private String puntajeExamen;
+    private Long idPrueba;
+
+    private Long idEstudiante;
+    private Integer puntaje;
+    private LocalDate fechaRealizada;
+    private LocalDate fechaResultado;
 
 
 }
