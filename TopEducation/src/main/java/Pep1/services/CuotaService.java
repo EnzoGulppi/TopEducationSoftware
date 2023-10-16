@@ -24,11 +24,6 @@ public class CuotaService {
 
 
     public CuotaEntity BuscarPorID(Long idCuota){ return cuotaRepository.findByIdCuota(idCuota);}
-    /*public void guardarNumCuotas(Integer numeroCoutas) {
-        CuotaEntity cuota = new CuotaEntity();
-        cuota.setNumeroCuotas(numeroCoutas);
-        cuotaRepository.save(cuota);
-    }*/
 
     public ArrayList<CuotaEntity> obtenerCuotasPorRutEstudiante(String rut) {
         EstudiantesEntity estudiantes = estudiantesRepository.findByRutEstudiante(rut);
@@ -74,22 +69,22 @@ public class CuotaService {
         return cuotasGeneradas;
     }
 
-    private boolean tieneCuotasPrevias(EstudiantesEntity estudiantes) {
+    public boolean tieneCuotasPrevias(EstudiantesEntity estudiantes) {
         return !cuotaRepository.findAllByEstudianteId(estudiantes.getIdEstudiante()).isEmpty();
     }
 
-    private boolean tieneErroresDeEntrada(EstudiantesEntity estudiantes, Integer cantidad, String tipo) {
+    public boolean tieneErroresDeEntrada(EstudiantesEntity estudiantes, Integer cantidad, String tipo) {
         //Más validaciones según sean necesarias
         return cantidad > 1 && "Contado".equals(tipo);
     }
 
-    private CuotaEntity crearErrorCuota(EstudiantesEntity estudiantes, Integer cantidad, String tipo) {
+    public CuotaEntity crearErrorCuota(EstudiantesEntity estudiantes, Integer cantidad, String tipo) {
         CuotaEntity errorCuota = new CuotaEntity();
         errorCuota.setAtraso(-1);
         return errorCuota;
     }
 
-    private CuotaEntity crearCuotaDeMatricula(EstudiantesEntity estudiante) {
+    public CuotaEntity crearCuotaDeMatricula(EstudiantesEntity estudiante) {
         CuotaEntity matricula = new CuotaEntity();
         matricula.setIdEstudiante(estudiante.getIdEstudiante());
         matricula.setArancel(70000.0);
@@ -103,7 +98,7 @@ public class CuotaService {
         return matricula;
     }
 
-    private float calcularArancelConDescuentos(EstudiantesEntity estudiantes) {
+    public float calcularArancelConDescuentos(EstudiantesEntity estudiantes) {
         double descuento = 0;
 
         if ("Municipal".equals(estudiantes.getTipoColegio())) {
@@ -123,7 +118,7 @@ public class CuotaService {
         return (float) total;
     }
 
-    private CuotaEntity crearCuotaContado(EstudiantesEntity estudiante, double monto) {
+    public CuotaEntity crearCuotaContado(EstudiantesEntity estudiante, double monto) {
         CuotaEntity cuota = new CuotaEntity();
         cuota.setIdEstudiante(estudiante.getIdEstudiante());
         cuota.setArancel(monto);
@@ -136,7 +131,7 @@ public class CuotaService {
         return cuota;
     }
 
-    private List<CuotaEntity> crearCuotas(EstudiantesEntity estudiante, Integer cantidad, double monto) {
+    public List<CuotaEntity> crearCuotas(EstudiantesEntity estudiante, Integer cantidad, double monto) {
         List<CuotaEntity> cuotas = new ArrayList<>();
 
         for (int i = 0; i < cantidad; i++) {

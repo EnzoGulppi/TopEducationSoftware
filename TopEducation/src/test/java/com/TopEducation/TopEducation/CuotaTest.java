@@ -6,18 +6,23 @@ import Pep1.repositories.CuotaRepository;
 import Pep1.repositories.EstudiantesRepository;
 import Pep1.services.CuotaService;
 import Pep1.services.EstudiantesService;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
+import org.junit.jupiter.api.Test;
+
+
+
+
 import java.util.ArrayList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 @SpringBootTest
-public class CuotaTest {
+class CuotaTest {
     @Autowired
     private CuotaService cuotaService;
 
@@ -30,8 +35,9 @@ public class CuotaTest {
     @Autowired
     private EstudiantesRepository estudiantesRepository;
 
+
     @Test
-    void ListarCuotas_RutNoExiste() {
+    public void ListarCuotas_RutNoExiste() {
         ArrayList<CuotaEntity> cuotas;
         //Se coloca rut ficticio que no existe debido a formato
         cuotas = cuotaService.obtenerCuotasPorRutEstudiante("hjsdfbsj");
@@ -48,7 +54,7 @@ public class CuotaTest {
         assertEquals(cuotas.get(0).getAtraso(),-1,0);
     }
     @Test
-    void ListarCuotas_CuotasNoExisten() {
+    public void ListarCuotas_CuotasNoExisten() {
         //Elementos Internos.
         ArrayList<CuotaEntity> cuotas;
         EstudiantesEntity estudiantes = new EstudiantesEntity();   //Estudiante de prueba.
@@ -72,7 +78,7 @@ public class CuotaTest {
         assertTrue(cuotas.isEmpty());
     }
     @Test
-    void testGenerarCuotas_MinimoExcedido() {
+    public void testGenerarCuotas_MinimoExcedido() {
         EstudiantesEntity estudiante1 = crearEstudianteDePrueba("prueba1", "Lopez Perez", "Ana Maria", "Privado", "Colegio A", 2018);
         EstudiantesEntity estudiante2 = crearEstudianteDePrueba("prueba2", "Ramirez Baeza", "Elvio Camba", "Subvencionado", "Colegio B", 2017);
         EstudiantesEntity estudiante3 = crearEstudianteDePrueba("prueba3", "Gonzalez Rodriguez", "Pedro", "Municipal", "Colegio C", 2019);
@@ -86,7 +92,7 @@ public class CuotaTest {
         assertEquals(cuotas3.get(0).getAtraso(), -2, 0);
     }
 
-    private EstudiantesEntity crearEstudianteDePrueba(String rut, String apellidos, String nombres, String tipoColegio, String nombreColegio, int egreso) {
+    public EstudiantesEntity crearEstudianteDePrueba(String rut, String apellidos, String nombres, String tipoColegio, String nombreColegio, int egreso) {
         EstudiantesEntity estudiante = new EstudiantesEntity();
         estudiante.setRutEstudiante(rut);
         estudiante.setApellidoEstudiante(apellidos);
@@ -98,7 +104,7 @@ public class CuotaTest {
         return estudiantesService.guardarEstudiantes(estudiante);
     }
 
-    private ArrayList<CuotaEntity> generarYEliminarCuotas(EstudiantesEntity estudiante, String tipoCuotas) {
+    public ArrayList<CuotaEntity> generarYEliminarCuotas(EstudiantesEntity estudiante, String tipoCuotas) {
         estudiante = estudiantesService.guardarEstudiantes(estudiante);
         ArrayList<CuotaEntity> cuotas = cuotaService.generarCuotasEstudiante(estudiante.getRutEstudiante(), 100, tipoCuotas);
         cuotaRepository.deleteAll(cuotas);
@@ -107,7 +113,7 @@ public class CuotaTest {
     }
 
     @Test
-    void GenerarCuotas_RutInexistente() {
+    public void GenerarCuotas_RutInexistente() {
         ArrayList<CuotaEntity> cuotas;
         //Generar cuotas por caso
         cuotas = cuotaService.generarCuotasEstudiante(".........",100,"Contado");
@@ -116,7 +122,7 @@ public class CuotaTest {
         assertEquals(cuotas.get(0).getAtraso(),-6,0);
     }
     @Test
-    void BuscarCuotaPorID(){
+    public void BuscarCuotaPorID(){
         //Elementos Internos.
         EstudiantesEntity estudiante = new EstudiantesEntity();   //Estudiante de prueba.
         ArrayList<CuotaEntity> cuotas;  //Cuotas generadas.
@@ -145,7 +151,7 @@ public class CuotaTest {
         assertEquals(cuotas.get(0).getEstadoCuota(),"Pagado");
     }
     @Test
-    void ConteoDeCuotasYFechaDeUltimaPagada() {
+    public void ConteoDeCuotasYFechaDeUltimaPagada() {
         //Elementos Internos.
         EstudiantesEntity estudiante = new EstudiantesEntity();   //Estudiante de prueba.
         ArrayList<CuotaEntity> cuotas;  //Cuotas generadas.

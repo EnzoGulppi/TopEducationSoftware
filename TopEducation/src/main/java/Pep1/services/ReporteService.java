@@ -80,7 +80,7 @@ public class ReporteService {
         return ResponseEntity.ok().headers(headers).contentLength(outputStream.size()).body(outputStream.toByteArray());
     }
 
-    private String obtenerDescuentoPorTipoColegio(String tipoColegio) {
+    public String obtenerDescuentoPorTipoColegio(String tipoColegio) {
         switch (tipoColegio) {
             case "Municipal":
                 return "20%";
@@ -91,7 +91,7 @@ public class ReporteService {
         }
     }
 
-    private String obtenerDescuentoPorAniosEgreso(int aniosEgreso) {
+    public String obtenerDescuentoPorAniosEgreso(int aniosEgreso) {
         if (aniosEgreso == 0) {
             return "15%";
         } else if (aniosEgreso <= 2) {
@@ -102,7 +102,7 @@ public class ReporteService {
         return "0%";
     }
 
-    private String obtenerDescuentoPorPruebas(int promedioPruebas) {
+    public String obtenerDescuentoPorPruebas(int promedioPruebas) {
         if (promedioPruebas >= 950) {
             return "10%";
         } else if (promedioPruebas >= 900) {
@@ -113,7 +113,7 @@ public class ReporteService {
         return "0%";
     }
 
-    private void actualizarPrecioCuotas(List<CuotaEntity> cuotas, float descuentoPuntaje) {
+    public void actualizarPrecioCuotas(List<CuotaEntity> cuotas, float descuentoPuntaje) {
         for (CuotaEntity cuota : cuotas) {
             double montoPagado = (float) (cuota.getMontoTotalPagado() - (cuota.getArancel() * descuentoPuntaje));
             cuota.setMontoTotalPagado(montoPagado);

@@ -73,7 +73,7 @@ public class SubirDataService {
         }
     }
 
-    private boolean esNumeroEnteroPositivo(String str) {
+    public boolean esNumeroEnteroPositivo(String str) {
         try {
             int numero = Integer.parseInt(str);
             return numero >= 0;
@@ -82,7 +82,7 @@ public class SubirDataService {
         }
     }
 
-    private boolean esFormatoFechaValido(String str) {
+    public boolean esFormatoFechaValido(String str) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         dateFormat.setLenient(false); // No permitir fechas inválidas como 32 de enero
         try {
@@ -180,7 +180,7 @@ public class SubirDataService {
         dataRepository.save(Prueba);
     }
 
-    private boolean esPuntajeValido(String puntaje) {
+    public boolean esPuntajeValido(String puntaje) {
         if (puntaje.isEmpty()) {
             return true; // Puntaje vacío, se establece un valor predeterminado
         }
