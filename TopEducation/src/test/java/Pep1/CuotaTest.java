@@ -1,4 +1,4 @@
-package com.TopEducation.TopEducation;
+package Pep1;
 
 import Pep1.entities.CuotaEntity;
 import Pep1.entities.EstudiantesEntity;
@@ -8,21 +8,17 @@ import Pep1.services.CuotaService;
 import Pep1.services.EstudiantesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import org.junit.jupiter.api.Test;
 
-
-
-
+import java.time.LocalDate;
 import java.util.ArrayList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
-class CuotaTest {
+public class CuotaTest {
     @Autowired
     private CuotaService cuotaService;
 
@@ -37,7 +33,7 @@ class CuotaTest {
 
 
     @Test
-    public void ListarCuotas_RutNoExiste() {
+    void ListarCuotas_RutNoExiste() {
         ArrayList<CuotaEntity> cuotas;
         //Se coloca rut ficticio que no existe debido a formato
         cuotas = cuotaService.obtenerCuotasPorRutEstudiante("hjsdfbsj");
@@ -54,75 +50,78 @@ class CuotaTest {
         assertEquals(cuotas.get(0).getAtraso(),-1,0);
     }
     @Test
-    public void ListarCuotas_CuotasNoExisten() {
-        //Elementos Internos.
-        ArrayList<CuotaEntity> cuotas;
-        EstudiantesEntity estudiantes = new EstudiantesEntity();   //Estudiante de prueba.
+    public void testContarCuotasPagadas() {
+        // Crear una lista de CuotaEntity simulada con algunas cuotas pagadas
+        ArrayList<CuotaEntity> cuotas = new ArrayList<>();
+        CuotaEntity cuota1 = new CuotaEntity();
+        cuota1.setEstadoCuota("Pagado");
+        cuotas.add(cuota1);
 
-        //Se genera estudiante de prueba Dummy (esto para evitar errores)
-        estudiantes.setRutEstudiante("prueba1");
-        estudiantes.setApellidoEstudiante("Ramirez Baeza");
-        estudiantes.setNombreEstudiante("Elvio Camba");
-        estudiantes.setTipoColegio("Privado");
-        estudiantes.setNombreColegio("Weston Academy");
-        estudiantes.setEgreso(4);
+        CuotaEntity cuota2 = new CuotaEntity();
+        cuota2.setEstadoCuota("Pagado");
+        cuotas.add(cuota2);
 
-        //Se guarda estudiante
-        estudiantes = estudiantesService.guardarEstudiantes(estudiantes);
+        CuotaEntity cuota3 = new CuotaEntity();
+        cuota3.setEstadoCuota("Pendiente");
+        cuotas.add(cuota3);
 
-        //Se establece un rut existente para la busqueda de cuotas
-        cuotas = cuotaService.obtenerCuotasPorRutEstudiante("prueba1");
-        estudiantesRepository.delete(estudiantes);
+        // Llamar al método que queremos probar
+        Integer resultado = cuotaService.ContarCuotasPagadas(cuotas);
 
-        //Se verifica lista vacia
-        assertTrue(cuotas.isEmpty());
+        // Verificar que el resultado sea igual al número de cuotas pagadas
+        assertEquals(2, resultado);
     }
     @Test
-    public void testGenerarCuotas_MinimoExcedido() {
-        EstudiantesEntity estudiante1 = crearEstudianteDePrueba("prueba1", "Lopez Perez", "Ana Maria", "Privado", "Colegio A", 2018);
-        EstudiantesEntity estudiante2 = crearEstudianteDePrueba("prueba2", "Ramirez Baeza", "Elvio Camba", "Subvencionado", "Colegio B", 2017);
-        EstudiantesEntity estudiante3 = crearEstudianteDePrueba("prueba3", "Gonzalez Rodriguez", "Pedro", "Municipal", "Colegio C", 2019);
+    void GenerarCuotas_MinimoExcedido() {
+        //Elementos Internos.
+        EstudiantesEntity estudiante = new EstudiantesEntity();   //Estudiante de prueba.
+        ArrayList<CuotaEntity> cuotas;  //Cuotas generadas.
+        ArrayList<CuotaEntity> cuotas1;  //Cuotas generadas.
+        ArrayList<CuotaEntity> cuotas2;  //Cuotas generadas.
 
-        ArrayList<CuotaEntity> cuotas1 = generarYEliminarCuotas(estudiante1, "Cuotas");
-        ArrayList<CuotaEntity> cuotas2 = generarYEliminarCuotas(estudiante2, "Cuotas");
-        ArrayList<CuotaEntity> cuotas3 = generarYEliminarCuotas(estudiante3, "Cuotas");
+        /*Se genera estudiante de prueba Dummy (esto para evitar errores)*/
+        estudiante.setRutEstudiante("prueba2");
+        estudiante.setApellidoEstudiante("Ramirez Baeza");
+        estudiante.setNombreEstudiante("Elvio Camba");
+        estudiante.setTipoColegio("Privado");
+        estudiante.setNombreColegio("Weston Academy");
+        estudiante.setEgreso(2018);
 
-        assertEquals(cuotas1.get(0).getAtraso(), -3, 0);
-        assertEquals(cuotas2.get(0).getAtraso(), -4, 0);
-        assertEquals(cuotas3.get(0).getAtraso(), -2, 0);
-    }
-
-    public EstudiantesEntity crearEstudianteDePrueba(String rut, String apellidos, String nombres, String tipoColegio, String nombreColegio, int egreso) {
-        EstudiantesEntity estudiante = new EstudiantesEntity();
-        estudiante.setRutEstudiante(rut);
-        estudiante.setApellidoEstudiante(apellidos);
-        estudiante.setNombreEstudiante(nombres);
-        estudiante.setFechaNacimiento(new Date());
-        estudiante.setTipoColegio(tipoColegio);
-        estudiante.setNombreColegio(nombreColegio);
-        estudiante.setEgreso(egreso);
-        return estudiantesService.guardarEstudiantes(estudiante);
-    }
-
-    public ArrayList<CuotaEntity> generarYEliminarCuotas(EstudiantesEntity estudiante, String tipoCuotas) {
+        /*Generar cuotas por caso*/
         estudiante = estudiantesService.guardarEstudiantes(estudiante);
-        ArrayList<CuotaEntity> cuotas = cuotaService.generarCuotasEstudiante(estudiante.getRutEstudiante(), 100, tipoCuotas);
+        cuotas = cuotaService.generarCuotasEstudiante("prueba2",15,"Cuotas");
         cuotaRepository.deleteAll(cuotas);
         estudiantesRepository.delete(estudiante);
-        return cuotas;
+
+        estudiante.setTipoColegio("Subvencionado");
+        estudiante = estudiantesService.guardarEstudiantes(estudiante);
+        cuotas1 = cuotaService.generarCuotasEstudiante("prueba2",15,"Cuotas");
+        cuotaRepository.deleteAll(cuotas1);
+        estudiantesRepository.delete(estudiante);
+
+        estudiante.setTipoColegio("Municipal");
+        estudiante = estudiantesService.guardarEstudiantes(estudiante);
+        cuotas2 = cuotaService.generarCuotasEstudiante("prueba2",15,"Cuotas");
+        cuotaRepository.deleteAll(cuotas2);
+        estudiantesRepository.delete(estudiante);
+
+        /*Verificar resultados*/
+        assertEquals(cuotas.get(0).getAtraso(),-5,0);
+        assertEquals(cuotas1.get(0).getAtraso(),-4,0);
+        assertEquals(cuotas2.get(0).getAtraso(),-3,0);
     }
 
     @Test
     public void GenerarCuotas_RutInexistente() {
         ArrayList<CuotaEntity> cuotas;
         //Generar cuotas por caso
-        cuotas = cuotaService.generarCuotasEstudiante(".........",100,"Contado");
+        cuotas = cuotaService.generarCuotasEstudiante(".........",1,"Contado");
         cuotaRepository.deleteAll(cuotas);
         //Verificar resultados
-        assertEquals(cuotas.get(0).getAtraso(),-6,0);
+        assertEquals(cuotas.get(0).getAtraso(),-6,-1);
     }
     @Test
-    public void BuscarCuotaPorID(){
+    void BuscarCuotaPorID(){
         //Elementos Internos.
         EstudiantesEntity estudiante = new EstudiantesEntity();   //Estudiante de prueba.
         ArrayList<CuotaEntity> cuotas;  //Cuotas generadas.
@@ -132,7 +131,6 @@ class CuotaTest {
         estudiante.setRutEstudiante("prueba2");
         estudiante.setApellidoEstudiante("Ramirez Baeza");
         estudiante.setNombreEstudiante("Elvio Camba");
-        estudiante.setFechaNacimiento(new Date());
         estudiante.setTipoColegio("Privado");
         estudiante.setNombreColegio("Weston Academy");
         estudiante.setEgreso(4);
@@ -163,7 +161,6 @@ class CuotaTest {
         estudiante.setRutEstudiante("prueba2");
         estudiante.setApellidoEstudiante("Ramirez Baeza");
         estudiante.setNombreColegio("Elvio Camba");
-        estudiante.setFechaNacimiento(new Date());
         estudiante.setTipoColegio("Privado");
         estudiante.setNombreColegio("Weston Academy");
         estudiante.setEgreso(4);
@@ -183,6 +180,31 @@ class CuotaTest {
         assertEquals(CuotasPagadas,1,0);
         assertEquals(CuotasAtradadas,0,0);
         assertEquals(FechaUltimaPagada, "");
+    }
+
+    @Test
+    public void testFechaUltimaCuotaPagada() {
+        // Crear una lista de CuotaEntity simulada con algunas cuotas pagadas
+        ArrayList<CuotaEntity> cuotas = new ArrayList<>();
+        CuotaEntity cuota1 = new CuotaEntity();
+        cuota1.setEstadoCuota("Pendiente");
+        cuotas.add(cuota1);
+
+        CuotaEntity cuota2 = new CuotaEntity();
+        cuota2.setEstadoCuota("Pagado");
+        cuota2.setPagoCuota(LocalDate.of(2023, 1, 15)); // Esta es la última cuota pagada
+        cuotas.add(cuota2);
+
+        CuotaEntity cuota3 = new CuotaEntity();
+        cuota3.setEstadoCuota("Pagado");
+        cuota3.setPagoCuota(LocalDate.of(2023, 2, 10)); // Esta es la última cuota pagada
+        cuotas.add(cuota3);
+
+        // Llamar al método que queremos probar
+        String resultado = cuotaService.FechaUltimaCuotaPagada(cuotas);
+
+        // Verificar que el resultado sea igual a la fecha de la última cuota pagada
+        assertEquals("2023-02-10", resultado);
     }
 
 
