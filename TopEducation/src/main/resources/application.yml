@@ -1,0 +1,18 @@
+server:
+    port: 8090
+
+spring:
+    application:
+        name: TopEducationSoftware
+    jpa:
+        open-in-view: false
+        show-sql: true
+        hibernate:
+            dialect: MySQLDialect
+            ddl-auto: update
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        dbname: db_topeducation
+        url: jdbc:mysql://localhost:3306/db_topeducation
+        username: root
+        password: 109426959Enzo

@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  mysql-db:
+    image: mysql
+    restart: always
+    volumes:
+    -  ./data/db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 109426959Enzo
+      MYSQL_DATABASE: db_topeducation
+    ports:
+      - "3305:3306"
+  app:
+    container_name: proyecto_topeducation_uno
+    image: enzogulppi/proyecto_topeducation_uno
+    ports:
+      - "8090:8090"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/db_topeducation?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=109426959Enzo
+    deploy:
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - mysql-db
